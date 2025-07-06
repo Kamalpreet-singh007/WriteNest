@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Blogs from './Blogs';
-import DeleteButton from './DeleteBlogs';
+// import Blogs from './Blogs';
+import Blog from './Blog';
 import { makeStyles } from '@mui/styles';
 import config from '../config';
 
@@ -65,33 +65,20 @@ const UserBlogs = () => {
     sendRequest().then((data) => setUser(data?.user));
   }, []);
 
-  const handleDelete = (blogId) => {
-    axios.delete(`${config.BASE_URL}/api/blogs/${blogId}`).then(() => {
-      sendRequest().then((data) => setUser(data.user));
-    });
-  };
-
   return (
-    <div className={classes.container}>
+    <div>
       {user &&
         user.blogs &&
         user.blogs.map((blog, index) => (
-          <div key={index} className={classes.blogContainer}>
-            <Blogs
-              id={blog._id}
-              isUser={true}
-              title={blog.title}
-              description={blog.description}
-              imageURL={blog.image}
-              userName={user.name}
-            />
-            <img
-              className={classes.blogImage}
-              src={blog.image}
-              alt={blog.title}
-            />
-            <DeleteButton blogId={blog._id} onDelete={handleDelete} />
-          </div>
+          <Blog
+            id={blog._id}
+            isUser={true}
+            title={blog.title}
+            desc={blog.desc}
+            img={blog.img}
+            user={user.name}
+            date={new Date(blog.date).toLocaleDateString()}
+          />
         ))}
     </div>
   );
